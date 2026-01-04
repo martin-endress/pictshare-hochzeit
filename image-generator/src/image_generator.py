@@ -10,6 +10,8 @@ IMAGES_DIR = Path("images")
 COLLAGES_DIR = IMAGES_DIR / "collages"
 ARCHIVE_DIR = IMAGES_DIR / "archive"
 
+WAIT_THRESHOLD = 60
+
 def init_folders():
     COLLAGES_DIR.mkdir(parents=True, exist_ok=True)
     ARCHIVE_DIR.mkdir(parents=True, exist_ok=True)
@@ -29,20 +31,37 @@ def main():
     
     init_folders()
 
-    glob_regex = "images/*.png/*.png"
+    glob_regex = "images/*/*.*"
+    excluded_folders = ['archive', 'collages']
+
+    contains_items = False
+    started_waiting = int(datetime.now().timestamp())
 
     while True:
-        image_queue = [Path(x) for x in glob(glob_regex)]
+        image_queue = [Path(x) for x in glob(glob_regex) if Path(x).parent.name not in excluded_folders]
         # idk if this is necessary
         sleep(1)
         if len(image_queue) == 0:
-            print("Queue empty, waiting...")
+            contains_items = False
+            print("Queue empty, waiting for images.")
         elif len(image_queue) < 4:
-            print("Queue contains {l} entries, waiting...".format(l=len(image_queue)))
+            if not contains_items:
+                contains_items = True
+                started_waiting = int(datetime.now().timestamp())
+            waiting_for_seconds = int(datetime.now().timestamp()) - started_waiting
+            if waiting_for_seconds > WAIT_THRESHOLD:
+                print("Queue contains {l} entries. Processing images after wait threshold is reached (wait={wait})".format(l=len(image_queue), wait=waiting_for_seconds))
+                selected_images = image_queue
+                process_images(selected_images)
+                contains_items = False
+            else:
+                print("Queue contains {l} entries. Have been waiting for {wait} seconds now.".format(l=len(image_queue), wait=waiting_for_seconds))
         else:
             print("Queue contains {l} entries. Processing 4 images...".format(l=len(image_queue)))
-            process_images(image_queue[:4])
-        sleep(5)
+            selected_images = image_queue[:4]
+            process_images(selected_images)
+            contains_items = False
+        sleep(4)
 
 if __name__ == '__main__':
     main()
