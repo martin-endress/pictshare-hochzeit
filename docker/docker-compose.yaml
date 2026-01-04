@@ -1,0 +1,42 @@
+services:
+  pictshare:
+    image: pictshare-hochzeit:local
+    environment:
+      # string 	Sets the URL that will be shown to users for each upload. Must be set and must have tailing slash. eg:http://pictshare.local/
+      URL: "http://localhost:8000/"
+      # TITLE
+      TITLE: "Hannah und Christoph"
+      # MAX_UPLOAD_SIZE in MB
+      MAX_UPLOAD_SIZE: 150
+      # bool 	If set to true, all IP addresses of uploaders will be stored in /data/uploads.csv
+      LOG_UPLOADER: false
+      # int 	0 (no compression) to 9 (best compression) Note that for PNGs the compression doesn't affect the quality of the image, just the en/decode speed and file size
+      #PNG_COMPRESSION:
+      # int 	0 (worst quality) to 100 (best quality)
+      JPEG_COMPRESSION: 90
+      # int 	0 (worst quality, smallest file) to 100 (best quality, biggest file)
+      WEBP_COMPRESSION: 90
+      # string 	If set, this code will be accepted to delete any image by adding "delete_yourmasterdeletecode" to any image
+      #MASTER_DELETE_CODE:
+      # IP addr 	If set, allows deletion of image no matter what delete code you provided if request is coming from this single IP
+      #MASTER_DELETE_IP:
+      # string 	If set, will only show the upload form if this url is requested. eg if you set it to /secret/upload then you only see the form if you go to http://your.pictshare.server/secret/upload but bare in mind that the uploads via API will still work for anyone
+      #UPLOAD_FORM_LOCATION:
+      # IPv4 or IPv6 CIDR 	If set, will limit uploads to IPs that match this CIDR
+      #ALLOWED_SUBNET:
+      # bool 	If set to true, JPGs will always be served as WebP, if the client supports it (if image/webp is in header HTTP_ACCEPT)
+      #ALWAYS_WEBP:
+      # string 	If set, all uploads require this code via GET or POST variable "uploadcode" to succeed
+      #UPLOAD_CODE:
+    ports:
+      - "8000:80"
+    volumes:
+      - hochzeitsfotos:/var/www/data
+  image-generator:
+    image: image-generator:local
+    volumes:
+      - hochzeitsfotos:/app/images
+      - /var/run/cups/cups.sock:/var/run/cups/cups.sock
+volumes:
+  hochzeitsfotos:
+
