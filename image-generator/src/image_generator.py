@@ -11,6 +11,7 @@ COLLAGES_DIR = IMAGES_DIR / "collages"
 ARCHIVE_DIR = IMAGES_DIR / "archive"
 
 WAIT_THRESHOLD = int(os.getenv("IMAGE_WAIT_THRESHOLD", "60"))
+GAMMA_CORRECT = float(os.getenv("GAMMA_CORRECT", "0.85"))
 
 def init_folders():
     COLLAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -18,16 +19,18 @@ def init_folders():
 
 def process_images(images):
     out_path = COLLAGES_DIR / 'collage_{date:%Y-%m-%d_%H-%M-%S}.png'.format(date=datetime.now())
-    create_collage(images, output_path=out_path)
+    create_collage(images, output_path=out_path, gamma=GAMMA_CORRECT)
     # mv to archive
     for image in images:
-        os.rename(image, ARCHIVE_DIR / image.name)
+        image.rename(ARCHIVE_DIR / image.name)
+        #os.rename(image, ARCHIVE_DIR / image.name)
     # print
     lp =  subprocess.run(["lp", str(out_path)])
 
 
 def main():
-    print("Starting image generation, using wait threshold of {threshold} seconds...".format(threshold=WAIT_THRESHOLD))
+    print("Starting image generation.")
+    print("\tthreshold: {threshold} seconds\n\tgamma correction: {gamma:.3f}.".format(threshold=WAIT_THRESHOLD, gamma=GAMMA_CORRECT))
     
     init_folders()
 
@@ -49,7 +52,7 @@ def main():
                 contains_items = True
                 started_waiting = int(datetime.now().timestamp())
             waiting_for_seconds = int(datetime.now().timestamp()) - started_waiting
-            if waiting_for_seconds > WAIT_THRESHOLD:
+            if waiting_for_seconds >= WAIT_THRESHOLD:
                 print("Queue contains {l} entries. Processing images after wait threshold is reached (wait={wait})".format(l=len(image_queue), wait=waiting_for_seconds))
                 selected_images = image_queue
                 process_images(selected_images)

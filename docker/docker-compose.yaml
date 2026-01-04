@@ -36,6 +36,7 @@ services:
     image: image-generator:local
     environment:
       IMAGE_WAIT_THRESHOLD: 30
+      GAMMA_CORRECT: "0.9"
     volumes:
       - hochzeitsfotos:/app/images
       - /var/run/cups/cups.sock:/var/run/cups/cups.sock
