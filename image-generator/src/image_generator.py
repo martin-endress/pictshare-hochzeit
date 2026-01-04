@@ -10,7 +10,7 @@ IMAGES_DIR = Path("images")
 COLLAGES_DIR = IMAGES_DIR / "collages"
 ARCHIVE_DIR = IMAGES_DIR / "archive"
 
-WAIT_THRESHOLD = 60
+WAIT_THRESHOLD = int(os.getenv("IMAGE_WAIT_THRESHOLD", "60"))
 
 def init_folders():
     COLLAGES_DIR.mkdir(parents=True, exist_ok=True)
@@ -27,7 +27,7 @@ def process_images(images):
 
 
 def main():
-    print("Starting image generation...")
+    print("Starting image generation, using wait threshold of {threshold} seconds...".format(threshold=WAIT_THRESHOLD))
     
     init_folders()
 
