@@ -18,6 +18,13 @@
 [![Hits](https://hits.seeyoufarm.com/api/count/incr/badge.svg?url=https%3A%2F%2Fgithub.com%2Fhascheksolutions%2Fpictshare&count_bg=%2379C83D&title_bg=%23555555&icon=&icon_color=%23E7E7E7&title=hits&edge_flat=false)](https://hits.seeyoufarm.com)
 [![](https://img.shields.io/github/stars/HaschekSolutions/pictshare.svg?label=Stars&style=social)](https://github.com/HaschekSolutions/pictshare)
 
+# Hochzeit Collage Drucker
+
+Schritte:
+1. Create docker volume `hochzeitsfotos`
+2. Build images using `build_images.sh`
+3. Start deployment in `./docker` using `docker compose up`.
+
 #### Host your own `images` `gifs` `mp4s` `text bins` and stay in control
 
 </div>
