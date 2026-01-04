@@ -45,8 +45,8 @@ Table of contents
 ## Hochzeit Collage Drucker
 
 Schritte:
-1. Create docker volume `hochzeitsfotos`
-2. Build images using `build_images.sh`
+1. Create docker volume `hochzeitsfotos`.
+2. Build images using `build_images.sh`.
 3. Start deployment in `./docker` using `docker compose up`
 
 ## Quickstart
