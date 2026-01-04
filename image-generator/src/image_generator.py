@@ -23,9 +23,8 @@ def process_images(images):
     # mv to archive
     for image in images:
         image.rename(ARCHIVE_DIR / image.name)
-        #os.rename(image, ARCHIVE_DIR / image.name)
     # print
-    lp =  subprocess.run(["lp", str(out_path)])
+    lp_process = subprocess.run(["lp", "-o", "media=Hagaki", str(out_path)])
 
 
 def main():
