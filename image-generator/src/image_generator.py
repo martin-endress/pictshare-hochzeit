@@ -35,12 +35,13 @@ def main():
 
     glob_regex = "images/*/*.*"
     excluded_folders = ['archive', 'collages']
+    supported_types = ['.png', '.jpg', '.jpeg']
 
     contains_items = False
     started_waiting = int(datetime.now().timestamp())
 
     while True:
-        image_queue = [Path(x) for x in glob(glob_regex) if Path(x).parent.name not in excluded_folders]
+        image_queue = [Path(x) for x in glob(glob_regex) if Path(x).parent.name not in excluded_folders and Path(x).suffix.lower() in supported_types]
         # idk if this is necessary
         sleep(1)
         if len(image_queue) == 0:

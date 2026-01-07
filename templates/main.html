@@ -43,7 +43,7 @@
         <div class="container" id="headcontainer">
             <div class="row">
                 <div class="col-md-8">
-                    <a href="/"><img src="/css/imgs/logo/header.png" /></a>
+                    <a href="/"><img width="100%" src="/css/imgs/header.png" /></a>
                     <?php 
                         if(file_exists(ROOT.DS.'notice.txt'))
                             echo '<div class="alert alert-warning" role="alert">'.file_get_contents(ROOT.DS.'notice.txt').'</div>';
@@ -60,7 +60,7 @@
                         <p>
                             <?php 
                                 echo "Maximale Größe: ". (int)(ini_get('upload_max_filesize'))."MB / File<br/>";
-                                echo "Unterstützte Dateitypen: png, jpeg, jpg, hif";
+                                echo "Unterstützte Dateitypen: PNG, JPEG";
 
                                 if(defined('UPLOAD_CODE') && UPLOAD_CODE!='')
                                     echo '<br>Upload Code: <input type="password" id="uploadcode"  />';
